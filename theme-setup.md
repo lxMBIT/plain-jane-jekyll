@@ -1,6 +1,6 @@
 ---
 layout: page
-permalink: /theme-setup/index.html
+permalink: /theme-setup/
 title: Theme Setup
 description: "Instructions on how to install and customize the Jekyll theme So Simple."
 modified: 2013-09-11
@@ -9,14 +9,18 @@ tags: [Jekyll, theme, install, setup]
 
 General notes and suggestions for customizing **So Simple Theme**.
 
+* Table of Contents
+{:toc}
+
 ## Basic Setup for a new Jekyll site
 
 1. [Install Jekyll](http://jekyllrb.com) and read through the documentation if you haven't already.
-2. Fork the [So Simple Theme repo](https://github.com/mmistakes/so-simple-theme/fork)
-3. Clone the repo you just forked.
-4. Edit `_config.yml` to personalize your site.
-5. Check out the sample posts in `_posts` to see examples for pulling in large feature images, assigning categories and tags, and other YAML data.
-6. Read the documentation below for further customization pointers and documentation.
+2. [Install Jekyll Extra - Kramdown](http://jekyllrb.com/docs/extras/#kramdown)
+3. Fork the [So Simple Theme repo](https://github.com/mmistakes/so-simple-theme/fork)
+4. Clone the repo you just forked.
+5. Edit `_config.yml` to personalize your site.
+6. Check out the sample posts in `_posts` to see examples for pulling in large feature images, assigning categories and tags, and other YAML data.
+7. Read the documentation below for further customization pointers and documentation.
 
 <div markdown="0"><a href="https://github.com/mmistakes/so-simple-theme" class="btn">Download the Theme</a></div>
 
@@ -37,8 +41,10 @@ description:      Site description for the metas.
 logo:             site-logo.png
 disqus_shortname: shortname
 search:           true
-#Comment out url when working locally to resolve base urls correctly
-url:              http://whatever.com
+# Your site's domain goes here. When working locally use localhost server leave blank
+# PS. If you set this wrong stylesheets and scripts won't load and most links will break.
+# PPS. If you leave it blank for local testing home links won't work, they'll be fine for live domains though.
+url:              http://localhost:4000
 
 # Owner/author information
 owner:
@@ -65,9 +71,9 @@ bing_verify:
 # For external links add external: true
 links:
   - title: About
-    url: /about
+    url: /about/
   - title: Articles
-    url: /articles
+    url: /articles/
   - title: Google
     url: http://google.com
     external: true
@@ -78,7 +84,7 @@ pygments:    true
 markdown:    kramdown
 
 # https://github.com/mojombo/jekyll/wiki/Permalinks
-permalink:   /:categories/:title
+permalink:   /:categories/:title/
 {% endhighlight %}
 
 ---
@@ -120,7 +126,7 @@ so-simple-theme/
 
 ### _config.yml
 
-Most of the variables found here are used in the .html files found in `_includes` if you need to add or remove anything. A good place to start would be to change the title, tagline, description, and url of your site. When working locally comment out `url`[^1] or else you will get a bunch of broken links because they are absolute and prefixed with `{{ "{{ site.url " }}}}` in the various `_includes` and `_layouts`. Just remember to uncomment `url` when building for deployment or pushing to **gh-pages**...
+Most of the variables found here are used in the .html files found in `_includes` if you need to add or remove anything. A good place to start would be to change the title, tagline, description, and url of your site. Links are absolute and prefixed with `{{ "{{ site.url " }}}}` in the various `_includes` and `_layouts`, so remember to properly set `url`[^1] and use `http://localhost:4000` when developing locally or else the theme's stylesheet and scripts won't load.
 
 #### Disqus Comments
 
@@ -148,7 +154,7 @@ Edit page/post titles and URLs to include in the site's navigation. For external
 # sample top navigation links
 links:
   - title: About Page
-    url: /about
+    url: /about/
   - title: Articles
     url: /articles
   - title: Other Page
@@ -208,9 +214,12 @@ image:
 
 In the sample `_posts` folder you may have noticed `category: articles` in the front matter. I like keeping all posts grouped in the same folder. If you decide to rename or add categories you will need to modify the permalink in `articles.md` along with the filename (if renaming).
 
-For example. Say you want to group all your posts under `blog/` instead of `articles/`. In your post add `category: blog` to the front matter, rename or duplicate `articles.md` to `blog.md` and change the permalink in that file to `permalink: /blog/index.html`.
+For example. Say you want to group all your posts under `blog/` instead of `articles/`. In your post add `category: blog` to the front matter, rename or duplicate `articles.html` to `blog.html` and change the permalink in that file to `permalink: /blog/`.
 
-If done correctly `/blog` should be a page listing all the site's posts.
+If done correctly `/blog/` should be a page listing all of the site's posts.
+
+**ProTip:** To create multiple category pages, listing posts assigned to just that category modify the `for post` loop found in `articles.html` to something like `{{ "{% for post in site.categories.articles " }}%}`. Just be careful if you decide to paginate this page, Jekyll won't limit it to the category and will pull from all of your posts unless you use a plugin or a mess of Liquid if statements.
+{: .notice}
 
 #### Post/Page Thumbnails for OG and Twitter Cards
 
@@ -228,6 +237,14 @@ Not sure if this only effects Kramdown or if it's an issue with Markdown in gene
 
 {% highlight html %}
 <iframe width="560" height="315" src="http://www.youtube.com/embed/PWf4WUoMXwg" frameborder="0"> </iframe>
+{% endhighlight %}
+
+#### Social Share Links
+
+To enable Facebook, Twitter, and Google+ share links on a post or page, add the following to its front matter:
+
+{% highlight yaml %}
+share: true
 {% endhighlight %}
 
 #### Twitter Cards
@@ -260,8 +277,8 @@ Having a problem getting something to work or want to know why I setup something
 
 ## License
 
-This theme is free and open source software, distributed under the [GNU General Public License]({{ site.url }}/LICENSE) version 2 or later. So feel free to use this Jekyll theme on your site without linking back to me or using a disclaimer.
+This theme is free and open source software, distributed under the [GNU General Public License]({{ site.url }}/LICENSE) version 2 or later. So feel free to to modify this theme to suit your needs. 
 
 If you'd like to give me credit somewhere on your blog or tweet a shout out to [@mmistakes](https://twitter.com/mmistakes), that would be pretty sweet.
 
-[^1]: Used to generate absolute urls in *sitemap.xml*, *feed.xml*, and for canonical urls in *head.html*. Don't include a trailing `/` in your base url ie: http://mademistakes.com. When developing locally remove or comment out this line so local CSS, JS, and image assets are used.
+[^1]: Used to generate absolute urls in `sitemap.xml`, `feed.xml`, and for canonical urls in `head.html`. Don't include a trailing `/` in your base url ie: http://mademistakes.com. When developing locally I suggest using `http://localhost:4000` or whatever server you're using to properly load the theme's stylesheet, scripts, and image assets. If you leave this variable blank all links will resolve correctly except those pointing home.
