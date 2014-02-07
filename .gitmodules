@@ -1,0 +1,3 @@
+[submodule "bigfoot"]
+	path = bigfoot
+	url = https://github.com/pxldot/bigfoot.git
